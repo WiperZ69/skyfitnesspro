@@ -1,0 +1,110 @@
+'use client'
+
+import { authUser } from '@/app/services/auth/authApi'
+import { setCredentials } from '@/store/features/authSlice'
+import { closeAuthModal, switchAuthModal } from '@/store/features/uiSlice'
+import { useAppDispatch } from '@/store/store'
+import classNames from 'classnames'
+import { useState } from 'react'
+import { Logo } from '../Logo/Logo'
+import styles from './SigninForm.module.scss'
+
+export const SigninForm = () => {
+	const dispatch = useAppDispatch()
+	const [error, setError] = useState('')
+	const [loading, setLoading] = useState(false)
+
+	const handleSubmit = async (e: React.FormEvent) => {
+		e.preventDefault()
+		setError('')
+		setLoading(true)
+
+		const form = e.target as HTMLFormElement
+		const formData = new FormData(form)
+
+		const email = formData.get('email') as string
+		const password = formData.get('password') as string
+
+		if (!email || !password) {
+			setError('Введите email и пароль')
+			setLoading(false)
+			return
+		}
+
+		try {
+			const user = await authUser({ email, password })
+
+			if (user) {
+				dispatch(
+					setCredentials({
+						user: {
+							email: email,
+							selectedCourses: [],
+						},
+						token: user.token,
+					})
+				)
+
+				dispatch(closeAuthModal())
+				console.log('ok auth')
+			} else {
+				setError('Ошибка авторизации')
+			}
+		} catch (err: any) {
+			console.error('Ошибка входа:', err)
+
+			if (err.response?.status === 400) {
+				setError('Неверный email или пароль')
+			} else if (err.response?.status === 401) {
+				setError('Неверные учетные данные')
+			} else {
+				setError('Ошибка сервера. Попробуйте позже')
+			}
+		} finally {
+			setLoading(false)
+		}
+	}
+
+	return (
+		<form className={styles.modal__form} onSubmit={handleSubmit}>
+			<Logo />
+			<input
+				className={classNames(styles.modal__input, styles.login)}
+				type='email'
+				name='email'
+				placeholder='Email'
+				disabled={loading}
+				required
+				autoComplete='email'
+			/>
+			<input
+				className={styles.modal__input}
+				type='password'
+				name='password'
+				placeholder='Пароль'
+				disabled={loading}
+				required
+				autoComplete='current-password'
+			/>
+
+			{error && <div className={styles.errorContainer}>{error}</div>}
+
+			<button
+				className={styles.modal__btnEnter}
+				type='submit'
+				disabled={loading}
+			>
+				{loading ? 'Вход...' : 'Войти'}
+			</button>
+
+			<button
+				type='button'
+				disabled={loading}
+				className={styles.modal__btnSignup}
+				onClick={() => dispatch(switchAuthModal('signup'))}
+			>
+				Зарегистрироваться
+			</button>
+		</form>
+	)
+}

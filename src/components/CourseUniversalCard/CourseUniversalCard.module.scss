@@ -1,0 +1,141 @@
+.card {
+	border-radius: 30px;
+	box-shadow: 0 4px 67px -12px rgba(0, 0, 0, 0.13);
+	background: #fff;
+	padding-bottom: 15px;
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+	max-width: 360px;
+	position: relative;
+	transition: 0.2s ease;
+
+	&:hover {
+		.card__favorite {
+			transform: scale(1.15);
+		}
+	}
+
+	/* ---------------------- IMAGE ---------------------- */
+
+	.imageBlock {
+		position: relative;
+		width: 100%;
+		img,
+		.image {
+			border-radius: 30px 30px 0 0;
+			object-fit: cover;
+		}
+	}
+
+	/* Ссылка (обертка) */
+	&__link {
+		img {
+			border-radius: 30px;
+		}
+	}
+
+	/* ---------------------- TITLE ---------------------- */
+
+	&__title,
+	.title {
+		padding-top: 24px;
+		padding-inline: 30px;
+		font-weight: 500;
+		font-size: 32px;
+		line-height: 110%;
+		color: #000;
+	}
+
+	/* ---------------------- TAGS ---------------------- */
+
+	&__description,
+	.tags {
+		padding-inline: 30px;
+		display: flex;
+		flex-flow: row wrap;
+		gap: 6px;
+	}
+
+	&__days,
+	&__time,
+	&__difficulty,
+	.tag {
+		display: flex;
+		align-items: center;
+		gap: 7px;
+		border-radius: 50px;
+		padding: 10px;
+		background: #f7f7f7;
+		font-size: 15px;
+	}
+
+	/* Difficulty label from second component */
+	.tag p {
+		margin: 0;
+	}
+
+	/* ---------------------- FAVORITE BUTTON ---------------------- */
+
+	&__favorite,
+	.favorite {
+		position: absolute;
+		top: 22.6px;
+		right: 22.6px;
+		cursor: pointer;
+		transition: all 0.2s ease;
+
+		&:hover {
+			transform: scale(1.15);
+		}
+	}
+
+	/* ---------------------- PROGRESS BLOCK ---------------------- */
+
+	.progressBox {
+		padding-top: 20px;
+		padding-inline: 30px;
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		margin-top: -10px; // чтобы визуально входило в структуру
+	}
+
+	.progressLabel {
+		font-size: 16px;
+		font-weight: 500;
+		color: #000;
+	}
+
+	/* ---------------------- BUTTON ---------------------- */
+
+	.button {
+		margin-top: 6px;
+		width: 100%;
+		border: none;
+		border-radius: 46px;
+		padding: 16px 26px;
+		background: #bcec30;
+		color: #000;
+		font-weight: 400;
+		font-size: 18px;
+		line-height: 110%;
+		color: #000;
+		text-align: center;
+		cursor: pointer;
+		transition: 0.2s;
+
+		&:hover {
+			background-color: #c6ff00;
+		}
+
+		&:active {
+			background-color: #000;
+			color: #fff;
+		}
+		&:disabled {
+			background-color: #f7f7f7;
+			color: #999;
+		}
+	}
+}

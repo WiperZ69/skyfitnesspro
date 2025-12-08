@@ -1,0 +1,80 @@
+.menu {
+	position: absolute;
+	top: 60px;
+	right: 0;
+	background: #fff;
+	border-radius: 12px;
+	padding: 30px;
+	box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+	z-index: 1000;
+	min-width: 180px;
+	animation: fadeIn 0.2s ease;
+}
+
+.email {
+	font-weight: 400;
+	font-size: 18px;
+	line-height: 110%;
+	color: #999;
+	margin-bottom: 34px;
+}
+
+.profile {
+	border: none;
+	width: 100%;
+	font-weight: 400;
+	font-size: 18px;
+	line-height: 110%;
+	color: #000;
+	border-radius: 46px;
+	padding: 16px 26px;
+	margin-bottom: 10px;
+	background: #bcec30;
+	cursor: pointer;
+	&:hover {
+		background-color: #c6ff00;
+	}
+	&:active {
+		background-color: #000;
+		color: #fff;
+	}
+	&:disabled {
+		background-color: #f7f7f7;
+		color: #999;
+	}
+}
+
+.logout {
+	width: 100%;
+	font-weight: 400;
+	font-size: 18px;
+	line-height: 110%;
+	color: #000;
+	border-radius: 46px;
+	padding: 16px 26px;
+	border: 1px solid #000;
+	background-color: #fff;
+	cursor: pointer;
+	&:hover {
+		background-color: #f7f7f7;
+	}
+	&:active {
+		background-color: #e9eced;
+	}
+	&:disabled {
+		border: 1px solid #999;
+		color: #999;
+		background-color: #fff;
+	}
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(-4px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}

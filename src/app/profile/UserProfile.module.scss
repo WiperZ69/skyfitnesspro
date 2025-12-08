@@ -1,0 +1,97 @@
+.profile {
+	padding-top: 60px;
+	padding-inline: clamp(80px, 8vw, 160px);
+	display: flex;
+	flex-direction: column;
+	gap: 50px;
+
+	&__title {
+		font-size: 32px;
+		font-weight: 600;
+		margin-bottom: 20px;
+	}
+
+	&__card {
+		background: #fff;
+		border-radius: 24px;
+		padding: 30px;
+	}
+
+	&__info {
+		display: flex;
+		gap: 40px;
+		align-items: center;
+	}
+
+	&__avatar {
+		position: relative;
+		width: 160px;
+		height: 160px;
+
+		.avatar_image {
+			object-fit: contain;
+		}
+	}
+
+	&__details {
+		display: flex;
+		flex-direction: column;
+		gap: 15px;
+	}
+
+	&__login {
+		display: flex;
+		gap: 8px;
+		align-items: center;
+	}
+
+	&__label {
+		font-weight: 400;
+		font-size: 18px;
+		line-height: 110%;
+		color: #000;
+	}
+
+	&__email {
+		font-weight: 400;
+		font-size: 18px;
+		line-height: 110%;
+		color: #000;
+	}
+
+	.logoutBtn {
+		border: 1px solid #000;
+		border-radius: 46px;
+		padding: 16px 26px;
+		background: white;
+		cursor: pointer;
+		font-weight: 400;
+		font-size: 18px;
+		line-height: 110%;
+		color: #000;
+
+		&:hover {
+			background-color: #f7f7f7;
+		}
+		&:active {
+			background-color: #e9eced;
+		}
+		&:disabled {
+			border: 1px solid #999;
+			color: #999;
+			background-color: #fff;
+		}
+	}
+}
+
+.section_title {
+	font-size: 32px;
+	font-weight: 600;
+	margin-top: 40px;
+}
+
+.courses_list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 30px;
+}

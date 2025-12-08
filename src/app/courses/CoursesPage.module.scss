@@ -1,0 +1,34 @@
+.main {
+	padding-top: 60px;
+	padding-inline: clamp(80px, 8vw, 160px);
+
+	&__heading {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		gap: 24px;
+	}
+
+	&__title {
+		font-weight: 500;
+		font-size: 60px;
+		line-height: 100%;
+		color: #000;
+	}
+
+	&__description {
+		font-weight: 400;
+		font-size: 32px;
+		line-height: 110%;
+		color: #202020;
+	}
+}
+
+.courses {
+	padding-top: 50px;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: 40px;
+}

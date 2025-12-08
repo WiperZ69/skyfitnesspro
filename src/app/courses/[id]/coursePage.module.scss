@@ -1,0 +1,145 @@
+.page {
+	padding-top: 60px;
+	padding-bottom: 80px;
+	padding-inline: clamp(80px, 8vw, 160px);
+}
+
+.header {
+	position: relative;
+	height: 260px;
+	border-radius: 20px;
+	background: #ffd200;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	padding: 40px;
+	overflow: hidden;
+	margin-bottom: 60px;
+}
+
+.headerTitle {
+	z-index: 2;
+	font-weight: 500;
+	font-size: 60px;
+	line-height: 110%;
+	color: #fff;
+}
+
+.headerImage {
+	object-fit: contain;
+	right: -470px !important;
+	left: auto !important;
+	bottom: 0;
+	z-index: 1;
+}
+
+.fittingSection h2 {
+	font-weight: 600;
+	font-size: 40px;
+	line-height: 110%;
+	color: #000;
+	margin-bottom: 40px;
+}
+
+.fittingList {
+	display: flex;
+	gap: 17px;
+	margin-bottom: 60px;
+}
+
+.fittingItem {
+	display: flex;
+	gap: 16px;
+	align-items: center;
+	background: linear-gradient(152deg, #151720 0%, #1e212e 100%);
+	border-radius: 28px;
+	padding: 20px;
+	color: white;
+	width: 100%;
+}
+
+.fittingItem p {
+	font-weight: 400;
+	font-size: 24px;
+	line-height: 110%;
+	color: #fff;
+}
+
+.fittingNumber {
+	font-weight: 500;
+	font-size: 75px;
+	line-height: 135%;
+	color: #bcec30;
+}
+
+.direction {
+	display: flex;
+	flex-flow: row wrap;
+	align-items: center;
+	gap: 4px;
+	font-weight: 400;
+	font-size: 24px;
+	line-height: 110%;
+	color: #000;
+}
+
+.directionsSection h2 {
+	font-size: 28px;
+	margin-bottom: 20px;
+	font-weight: 600;
+	font-size: 40px;
+	line-height: 110%;
+	color: #000;
+}
+
+.directionsList {
+	background: #c6ff41;
+	border-radius: 16px;
+	padding: 20px;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 16px;
+}
+
+.cta {
+	border-radius: 30px;
+	padding: 40px;
+	box-shadow: 0 4px 67px -12px rgba(0, 0, 0, 0.13);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-top: 60px;
+	background-image: url('/course-man-back.svg');
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.ctaText {
+	max-width: 60%;
+}
+
+.ctaText h2 {
+	margin-bottom: 28px;
+	font-weight: 500;
+	font-size: 60px;
+	line-height: 100%;
+	color: #000;
+}
+
+.ctaText ul {
+	padding-left: 20px;
+	margin-bottom: 30px;
+}
+
+.ctaText ul li {
+	list-style: disc;
+	font-weight: 400;
+	font-size: 24px;
+	line-height: 110%;
+	color: #000;
+	opacity: 0.6;
+}
+
+.ctaImage {
+	object-fit: cover;
+}

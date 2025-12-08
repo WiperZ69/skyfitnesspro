@@ -1,0 +1,71 @@
+.header {
+	padding-top: 50px;
+	padding-inline: clamp(80px, 8vw, 160px);
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	&__box {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+	}
+	&__title {
+		font-weight: 400;
+		font-size: 18px;
+		line-height: 110%;
+		color: #000;
+		opacity: 0.5;
+	}
+	&__button {
+		font-weight: 400;
+		font-size: 18px;
+		line-height: 110%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		color: #000;
+		border-radius: 46px;
+		padding: 16px 26px;
+		background: #bcec30;
+		cursor: pointer;
+		outline: none;
+		border: none;
+		transition: all 0.2s ease;
+		&:hover {
+			background: #80aa00;
+		}
+	}
+}
+
+.userArea {
+	position: relative;
+}
+
+.userButton {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	cursor: pointer;
+}
+
+.avatar {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	object-fit: cover;
+}
+
+.username {
+	font-size: 18px;
+	font-weight: 500;
+}
+
+.arrow {
+	width: 12px;
+	height: 12px;
+	transition: transform 0.3s ease;
+}
+
+.arrowOpen {
+	transform: rotate(180deg);
+}
