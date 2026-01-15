@@ -6,7 +6,7 @@ import {
 	useStore,
 } from 'react-redux'
 import { authReducer } from './features/authSlice'
-import { coursesReducer } from './features/coursesSlice'
+import { coursesReducer } from './features/OLDcoursesSlice'
 import { progressReducer } from './features/progressSlice'
 import { uiReducer } from './features/uiSlice'
 import { userCoursesReducer } from './features/userCoursesSlice'

@@ -13,8 +13,8 @@ const roboto = Roboto({
 })
 
 export const metadata: Metadata = {
-	title: 'Skypro Music',
-	description: 'Listen your favorite songs',
+	title: 'SkyFitnessPro',
+	description: 'Онлайн тренировки',
 }
 
 export default function RootLayout({

@@ -1,6 +1,10 @@
 .main {
 	padding-top: 60px;
 	padding-inline: clamp(80px, 8vw, 160px);
+	@media (max-width: 660px) {
+		padding-inline: 16px;
+		padding-top: 40px;
+	}
 
 	&__heading {
 		display: flex;
@@ -15,6 +19,12 @@
 		font-size: 60px;
 		line-height: 100%;
 		color: #000;
+		@media (max-width: 660px) {
+			font-weight: 500;
+			font-size: 32px;
+			line-height: 110%;
+			color: #000;
+		}
 	}
 
 	&__description {
@@ -22,6 +32,9 @@
 		font-size: 32px;
 		line-height: 110%;
 		color: #202020;
+		@media (max-width: 660px) {
+			display: none;
+		}
 	}
 }
 
@@ -31,4 +44,8 @@
 	flex-direction: row;
 	flex-wrap: wrap;
 	gap: 40px;
+	@media (max-width: 660px) {
+		padding-top: 34px;
+		justify-content: center;
+	}
 }

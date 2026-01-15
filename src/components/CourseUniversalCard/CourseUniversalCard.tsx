@@ -44,7 +44,7 @@ export default function CourseUniversalCard({
 	}
 
 	return (
-		<Link href={`/courses/${course._id}`} className={styles.card}>
+		<Link href={`/fitness/courses/${course._id}`} className={styles.card}>
 			<div className={styles.imageBlock}>
 				<img
 					src={`/${course.nameEN}.png`}

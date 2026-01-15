@@ -2,13 +2,37 @@
 	padding-top: 60px;
 	padding-bottom: 80px;
 	padding-inline: clamp(80px, 8vw, 160px);
+	overflow: hidden;
+	@media (max-width: 660px) {
+		padding-top: 40px;
+		padding-inline: 16px;
+	}
+}
+
+.orange {
+	background: #ffc700;
+}
+
+.blue {
+	background: #2491d2;
+}
+
+.orange2 {
+	background: #f7a012;
+}
+
+.pink {
+	background: #ff7e66;
+}
+
+.violet {
+	background: #7d458c;
 }
 
 .header {
 	position: relative;
 	height: 260px;
 	border-radius: 20px;
-	background: #ffd200;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
@@ -23,6 +47,9 @@
 	font-size: 60px;
 	line-height: 110%;
 	color: #fff;
+	@media (max-width: 660px) {
+		display: none;
+	}
 }
 
 .headerImage {
@@ -31,6 +58,9 @@
 	left: auto !important;
 	bottom: 0;
 	z-index: 1;
+	@media (max-width: 660px) {
+		right: 0 !important;
+	}
 }
 
 .fittingSection h2 {
@@ -45,6 +75,9 @@
 	display: flex;
 	gap: 17px;
 	margin-bottom: 60px;
+	@media (max-width: 660px) {
+		flex-wrap: wrap;
+	}
 }
 
 .fittingItem {
@@ -81,6 +114,13 @@
 	font-size: 24px;
 	line-height: 110%;
 	color: #000;
+	@media (max-width: 660px) {
+		flex-wrap: nowrap;
+	}
+}
+
+.directionsSection {
+	position: relative;
 }
 
 .directionsSection h2 {
@@ -99,9 +139,17 @@
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	gap: 16px;
+	@media (max-width: 660px) {
+		grid-template-columns: repeat(1, 1fr);
+	}
+}
+
+.baseSection {
+	position: relative;
 }
 
 .cta {
+	position: relative;
 	border-radius: 30px;
 	padding: 40px;
 	box-shadow: 0 4px 67px -12px rgba(0, 0, 0, 0.13);
@@ -109,13 +157,22 @@
 	justify-content: space-between;
 	align-items: center;
 	margin-top: 60px;
+	background-color: #fff;
 	background-image: url('/course-man-back.svg');
 	background-repeat: no-repeat;
 	background-size: cover;
+	z-index: 2;
+	@media (max-width: 660px) {
+		background-image: none;
+		margin-top: 156px;
+	}
 }
 
 .ctaText {
 	max-width: 60%;
+	@media (max-width: 660px) {
+		max-width: 100%;
+	}
 }
 
 .ctaText h2 {
@@ -124,6 +181,12 @@
 	font-size: 60px;
 	line-height: 100%;
 	color: #000;
+	@media (max-width: 660px) {
+		font-weight: 500;
+		font-size: 32px;
+		line-height: 110%;
+		color: #000;
+	}
 }
 
 .ctaText ul {
@@ -138,8 +201,33 @@
 	line-height: 110%;
 	color: #000;
 	opacity: 0.6;
+	@media (max-width: 660px) {
+		font-weight: 400;
+		font-size: 18px;
+		line-height: 110%;
+		color: #000;
+	}
 }
 
 .ctaImage {
 	object-fit: cover;
+	@media (max-width: 660px) {
+		display: none;
+	}
+}
+
+.imageMan {
+	display: none;
+	@media (max-width: 660px) {
+		display: block;
+		transform: rotate(3deg);
+		position: absolute;
+		right: -100px;
+		top: 30%;
+		overflow: hidden;
+		z-index: 0;
+		background-image: url('/course-man-back.svg');
+		background-repeat: no-repeat;
+		background-size: cover;
+	}
 }

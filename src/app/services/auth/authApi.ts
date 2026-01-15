@@ -11,18 +11,26 @@ type RegisterUserProps = {
 	password: string
 }
 
-export type AuthResponse = {
-	email: string
-	username: string
+export type User = {
 	_id: string
-	selectedCourses?: []
+	email: string
+	password: string
+	selectedCourses: string[]
+	courseProgress: string[]
+	createdAt: string
+	updatedAt: string
+	__v: number
 }
 
-export type TokenResponse = {
+export type UserResponse = {
+	user: User
+}
+
+export type AuthResponse = {
 	token: string
 }
 
-function handleAxiosError(error: any): never {
+function handleAxiosError(error: unknown): never {
 	if (axios.isAxiosError(error)) {
 		const msg =
 			error.response?.data?.message ||
@@ -35,7 +43,7 @@ function handleAxiosError(error: any): never {
 	throw new Error('Неизвестная ошибка')
 }
 
-export async function authUser(data: AuthUserProps): Promise<TokenResponse> {
+export async function authUser(data: AuthUserProps): Promise<AuthResponse> {
 	try {
 		const res = await axios.post(
 			`${BASE_API_URL}${ROUTE_API_URL.login}`,
@@ -67,9 +75,9 @@ export async function registerUser(
 	}
 }
 
-export async function getUserCourses(token: string) {
+export async function getUser(token: string): Promise<UserResponse> {
 	try {
-		const res = await axios.get(`${BASE_API_URL}/users/me/courses`, {
+		const res = await axios.get(`${BASE_API_URL}/users/me`, {
 			headers: { Authorization: `Bearer ${token}` },
 		})
 		return res.data

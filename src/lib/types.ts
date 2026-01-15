@@ -25,8 +25,14 @@ export interface Workout {
 	}[]
 }
 
-export interface ProgressWorkout {
+export type WorkoutProgress = {
 	workoutId: string
 	workoutCompleted: boolean
 	progressData: number[]
+}
+
+export type CourseProgress = {
+	courseId: string
+	courseCompleted: boolean
+	workoutsProgress: WorkoutProgress[]
 }

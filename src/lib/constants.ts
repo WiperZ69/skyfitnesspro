@@ -8,5 +8,5 @@ export const ROUTE_API_URL = {
 	getCourseWorkouts: '/courses/:id/workouts',
 	userCourses: '/users/me',
 	addUserCourse: '/users/me/courses',
-	getCourseProgress: '/users/me/progress?courseId=',
+	getCourseProgress: '/users/me/progress',
 }

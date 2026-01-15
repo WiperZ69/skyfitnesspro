@@ -1,6 +1,7 @@
 'use client'
 
 import { calcPercent } from '@/app/utils/calcPercent'
+import { BASE_API_URL } from '@/lib/constants'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import styles from './WorkoutPage.module.scss'
@@ -18,6 +19,7 @@ interface Workout {
 	video: string
 	exercises: WorkoutExercise[]
 	progressData?: number[]
+	courseId?: string
 }
 
 export default function WorkoutPage() {
@@ -35,35 +37,17 @@ export default function WorkoutPage() {
 
 	async function saveProgress() {
 		const token = localStorage.getItem('token')
+		const courseId = workout?.courseId || searchParams.get('courseId')
+		if (!token || !courseId || !workoutId) return
 
-		const res = await fetch(
-			`https://wedev-api.sky.pro/api/fitness/courses/${courseId}/workouts/${workoutId}`,
-			{
-				method: 'PATCH',
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Bearer ${token}`,
-				},
-				body: JSON.stringify({ progressData: progress }),
-			}
-		)
-
-		const data = await res.json()
-		console.log('Прогресс сохранён:', data)
-	}
-
-	async function resetProgress() {
-		const token = localStorage.getItem('token')
-
-		await fetch(
-			`https://wedev-api.sky.pro/api/fitness/courses/${courseId}/workouts/${workoutId}/reset`,
-			{
-				method: 'PATCH',
-				headers: { Authorization: `Bearer ${token}` },
-			}
-		)
-
-		setProgress(new Array(workout?.exercises.length).fill(0))
+		await fetch(`${BASE_API_URL}/courses/${courseId}/workouts/${workoutId}`, {
+			method: 'PATCH',
+			headers: {
+				'Content-Type': '',
+				Authorization: `Bearer ${token}`,
+			},
+			body: JSON.stringify({ progressData: progress }),
+		})
 	}
 
 	useEffect(() => {
@@ -157,7 +141,6 @@ export default function WorkoutPage() {
 								<h2 className={styles.modal__title}>Мой прогресс</h2>
 								<div className={styles.exercises}>
 									{workout.exercises.map((ex, i) => {
-										const percent = calcPercent(progress[i], ex.quantity)
 										return (
 											<div key={ex._id} className={styles.exercise}>
 												<p className={styles.modal__text}>

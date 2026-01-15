@@ -33,7 +33,7 @@ export const Header = () => {
 
 	const handleProfileClick = () => {
 		setIsMenuOpen(false)
-		router.push('/profile')
+		router.push('/fitness/profile')
 	}
 
 	const handleLogout = () => {

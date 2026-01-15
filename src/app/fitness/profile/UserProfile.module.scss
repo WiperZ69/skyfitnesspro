@@ -5,10 +5,18 @@
 	flex-direction: column;
 	gap: 50px;
 
+	@media (max-width: 660px) {
+		padding-top: 40px;
+		padding-inline: 16px;
+	}
+
 	&__title {
 		font-size: 32px;
 		font-weight: 600;
 		margin-bottom: 20px;
+		@media (max-width: 660px) {
+			font-size: 24px;
+		}
 	}
 
 	&__card {
@@ -21,6 +29,9 @@
 		display: flex;
 		gap: 40px;
 		align-items: center;
+		@media (max-width: 660px) {
+			flex-direction: column;
+		}
 	}
 
 	&__avatar {
@@ -88,6 +99,9 @@
 	font-size: 32px;
 	font-weight: 600;
 	margin-top: 40px;
+	@media (max-width: 660px) {
+		font-size: 24px;
+	}
 }
 
 .courses_list {

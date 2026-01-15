@@ -3,7 +3,7 @@
 import type { Workout } from '@/lib/types'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import styles from './TrainingsModal.module.scss'
 
 interface TrainingsModalProps {
@@ -17,8 +17,14 @@ interface TrainingsModalProps {
 	} | null
 }
 
-export default function TrainingsModal({
-	isOpen,
+export default function TrainingsModal(props: TrainingsModalProps) {
+	const { isOpen } = props
+	if (!isOpen) return null
+
+	return <ModalContent key={Number(isOpen)} {...props} />
+}
+
+function ModalContent({
 	onClose,
 	title = 'Выберите тренировку',
 	trainings,
@@ -27,12 +33,6 @@ export default function TrainingsModal({
 }: TrainingsModalProps) {
 	const [selected, setSelected] = useState<string | null>(null)
 	const router = useRouter()
-
-	useEffect(() => {
-		if (isOpen) setSelected(null)
-	}, [isOpen])
-
-	if (!isOpen) return null
 
 	const handleStart = () => {
 		if (!selected) return
@@ -67,7 +67,7 @@ export default function TrainingsModal({
 									>
 										{(completed || selected === w._id) && (
 											<Image
-												src='/img/modals/done.svg'
+												src='/done.svg'
 												alt='done'
 												width={24}
 												height={24}

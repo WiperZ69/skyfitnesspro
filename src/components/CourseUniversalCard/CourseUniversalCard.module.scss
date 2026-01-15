@@ -16,8 +16,6 @@
 		}
 	}
 
-	/* ---------------------- IMAGE ---------------------- */
-
 	.imageBlock {
 		position: relative;
 		width: 100%;
@@ -28,14 +26,17 @@
 		}
 	}
 
-	/* Ссылка (обертка) */
+	.content {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+	}
+
 	&__link {
 		img {
 			border-radius: 30px;
 		}
 	}
-
-	/* ---------------------- TITLE ---------------------- */
 
 	&__title,
 	.title {
@@ -45,9 +46,10 @@
 		font-size: 32px;
 		line-height: 110%;
 		color: #000;
+		@media (max-width: 660px) {
+			font-size: 24px;
+		}
 	}
-
-	/* ---------------------- TAGS ---------------------- */
 
 	&__description,
 	.tags {
@@ -70,12 +72,9 @@
 		font-size: 15px;
 	}
 
-	/* Difficulty label from second component */
 	.tag p {
 		margin: 0;
 	}
-
-	/* ---------------------- FAVORITE BUTTON ---------------------- */
 
 	&__favorite,
 	.favorite {
@@ -90,15 +89,13 @@
 		}
 	}
 
-	/* ---------------------- PROGRESS BLOCK ---------------------- */
-
 	.progressBox {
 		padding-top: 20px;
 		padding-inline: 30px;
 		display: flex;
 		flex-direction: column;
 		gap: 8px;
-		margin-top: -10px; // чтобы визуально входило в структуру
+		margin-top: -10px;
 	}
 
 	.progressLabel {
@@ -106,8 +103,6 @@
 		font-weight: 500;
 		color: #000;
 	}
-
-	/* ---------------------- BUTTON ---------------------- */
 
 	.button {
 		margin-top: 6px;

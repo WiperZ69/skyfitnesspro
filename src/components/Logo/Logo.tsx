@@ -67,7 +67,7 @@ export const Logo = () => {
 					</defs>
 				</svg>
 			</Link>
-			<Link href='/'>
+			<Link className={styles.textLogo} href='/'>
 				<svg
 					width='183'
 					height='29'

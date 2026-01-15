@@ -1,9 +1,15 @@
 'use client'
 
-import { authUser } from '@/app/services/auth/authApi'
-import { setCredentials } from '@/store/features/authSlice'
+import { authUser, getUser } from '@/app/services/auth/authApi'
+import {
+	setIsAuthenticated,
+	setSelectedCourses,
+	setStorageLogin,
+	setStorageToken,
+} from '@/store/features/authSlice'
 import { closeAuthModal, switchAuthModal } from '@/store/features/uiSlice'
 import { useAppDispatch } from '@/store/store'
+import axios from 'axios'
 import classNames from 'classnames'
 import { useState } from 'react'
 import { Logo } from '../Logo/Logo'
@@ -32,33 +38,27 @@ export const SigninForm = () => {
 		}
 
 		try {
-			const user = await authUser({ email, password })
+			const { token } = await authUser({ email, password })
+			const user = await getUser(token)
 
 			if (user) {
-				dispatch(
-					setCredentials({
-						user: {
-							email: email,
-							selectedCourses: [],
-						},
-						token: user.token,
-					})
-				)
+				dispatch(setIsAuthenticated(true))
+				dispatch(setStorageLogin(user.user.email))
+				dispatch(setStorageToken(token))
+				dispatch(setSelectedCourses(user.user.selectedCourses || []))
 
 				dispatch(closeAuthModal())
-				console.log('ok auth')
 			} else {
 				setError('Ошибка авторизации')
 			}
-		} catch (err: any) {
+		} catch (err: unknown) {
 			console.error('Ошибка входа:', err)
 
-			if (err.response?.status === 400) {
-				setError('Неверный email или пароль')
-			} else if (err.response?.status === 401) {
-				setError('Неверные учетные данные')
+			if (axios.isAxiosError(err)) {
+				const errorData = err.response?.data
+				setError(errorData.message || 'Ошибка авторизации')
 			} else {
-				setError('Ошибка сервера. Попробуйте позже')
+				setError('Ошибка авторизации')
 			}
 		} finally {
 			setLoading(false)

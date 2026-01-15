@@ -1,20 +1,19 @@
-import { CourseProgress } from '@/lib/types'
+import { CourseProgressInterface } from '@/sharedInterfaces/sharedInterfaces'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-export interface AuthState {
+export interface initialState {
 	isAuthenticated: boolean
-	isLoading: boolean
+  isLoading: boolean
 	user: {
 		email: string
 		token: string
 		selectedCourses: string[]
-		courseProgress: CourseProgress[]
+		courseProgress: CourseProgressInterface[]
 	}
 }
 
-const initialState: AuthState = {
+const initialState: initialState = {
 	isAuthenticated: false,
-	isLoading: true,
 	user: {
 		email: '',
 		token: '',
@@ -23,13 +22,19 @@ const initialState: AuthState = {
 	},
 }
 
-const authSlice = createSlice({
-	name: 'auth',
+export const authSlice = createSlice({
+	name: 'authentication',
 	initialState,
 	reducers: {
-		setIsAuthenticated: (state, action: PayloadAction<boolean>) => {
+		setisSignUp: (state, action: PayloadAction<boolean>) => {
 			state.isAuthenticated = action.payload
 		},
+
+		setUserId: (state, action: PayloadAction<string>) => {
+			state.user.userId = action.payload
+			localStorage.setItem('userId', action.payload)
+		},
+
 		setStorageLogin: (state, action: PayloadAction<string>) => {
 			state.user.email = action.payload
 			localStorage.setItem('email', action.payload)
@@ -40,11 +45,12 @@ const authSlice = createSlice({
 			localStorage.setItem('token', action.payload)
 		},
 
-		logout: state => {
+		clearStorageTokens: state => {
+			state.user.userId = ''
 			state.user.email = ''
 			state.user.token = ''
-			state.isAuthenticated = false
 
+			localStorage.removeItem('userId')
 			localStorage.removeItem('email')
 			localStorage.removeItem('token')
 		},
@@ -53,7 +59,10 @@ const authSlice = createSlice({
 			state.user.selectedCourses = action.payload
 		},
 
-		setCourseProgress: (state, action: PayloadAction<CourseProgress[]>) => {
+		setCourseProgress: (
+			state,
+			action: PayloadAction<CourseProgressInterface[]>
+		) => {
 			state.user.courseProgress = action.payload
 		},
 
@@ -67,32 +76,18 @@ const authSlice = createSlice({
 				state.user.selectedCourses.push(action.payload)
 			}
 		},
-
-		restoreSession: state => {
-			if (typeof window !== 'undefined') {
-				const token = localStorage.getItem('token')
-				const user = localStorage.getItem('user')
-
-				if (token && user) {
-					state.user.token = token
-					state.user.email = JSON.parse(user)
-					state.isAuthenticated = true
-				}
-			}
-
-			state.isLoading = false
-		},
 	},
 })
 
 export const {
-	logout,
-	setCourseProgress,
-	setIsAuthenticated,
-	setSelectedCourses,
+	setisSignUp,
+	setUserId,
 	setStorageLogin,
 	setStorageToken,
+	clearStorageTokens,
+	setSelectedCourses,
+	setCourseProgress,
 	updateSelectedCourses,
-	restoreSession,
 } = authSlice.actions
-export const authReducer = authSlice.reducer
+
+export const authSliceSliceReducer = authSlice.reducer

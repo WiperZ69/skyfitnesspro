@@ -1,9 +1,15 @@
 'use client'
 
-import { authUser, registerUser } from '@/app/services/auth/authApi'
-import { setCredentials } from '@/store/features/authSlice'
+import { authUser, getUser, registerUser } from '@/app/services/auth/authApi'
+import {
+	setIsAuthenticated,
+	setSelectedCourses,
+	setStorageLogin,
+	setStorageToken,
+} from '@/store/features/authSlice'
 import { closeAuthModal, switchAuthModal } from '@/store/features/uiSlice'
 import { useAppDispatch } from '@/store/store'
+import axios from 'axios'
 import classNames from 'classnames'
 import { useState } from 'react'
 import { Logo } from '../Logo/Logo'
@@ -54,27 +60,21 @@ export const SignupForm = () => {
 		}
 
 		try {
-			const user = await registerUser({ email, password })
+			await registerUser({ email, password })
 
-			const tokens = await authUser({ email, password })
-
-			dispatch(
-				setCredentials({
-					user: {
-						email: user.email,
-						selectedCourses: user.selectedCourses || [],
-					},
-					token: tokens.token,
-				})
-			)
+			const token = await authUser({ email, password })
+			const user = await getUser(token.token)
+			dispatch(setIsAuthenticated(true))
+			dispatch(setStorageLogin(user.user.email))
+			dispatch(setStorageToken(token.token))
+			dispatch(setSelectedCourses(user.user.selectedCourses || []))
 
 			dispatch(closeAuthModal())
-		} catch (err: any) {
+		} catch (err: unknown) {
 			console.error('Ошибка регистрации:', err)
-			console.log(err.response.data)
 
-			if (err.response?.status === 400) {
-				const errorData = await err.response.data
+			if (axios.isAxiosError(err) && err.response?.status === 400) {
+				const errorData = err.response.data
 				setError(
 					errorData.message || 'Пользователь с таким email уже существует'
 				)
