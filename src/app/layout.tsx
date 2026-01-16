@@ -23,15 +23,15 @@ export default function RootLayout({
 	children: React.ReactNode
 }>) {
 	return (
-		<ReduxProvider>
-			<html lang='ru'>
-				<body className={`${roboto.variable}`}>
+		<html lang='ru'>
+			<body className={`${roboto.variable}`}>
+				<ReduxProvider>
 					<AuthModal />
 					<InitAuth />
 					<Header />
 					{children}
-				</body>
-			</html>
-		</ReduxProvider>
+				</ReduxProvider>
+			</body>
+		</html>
 	)
 }

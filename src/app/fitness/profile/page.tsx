@@ -27,6 +27,7 @@ export default function UserProfile() {
 	const [modalTitle, setModalTitle] = useState('')
 	const [currentWorkouts, setCurrentWorkouts] = useState<Workout[]>([])
 	const [modalLoading, setModalLoading] = useState(false)
+	const [currentCourseId, setCurrentCourseId] = useState<string | null>(null)
 
 	const token = user.token
 
@@ -58,6 +59,7 @@ export default function UserProfile() {
 
 	const handleOpenTrainings = async (course: Course) => {
 		if (!token) return
+		setCurrentCourseId(course._id)
 		setModalTitle(course.nameRU)
 		setIsModalOpen(true)
 		setModalLoading(true)
@@ -65,12 +67,11 @@ export default function UserProfile() {
 		try {
 			const uniqueWorkoutIds = Array.from(new Set(course.workouts))
 
-			const workoutsData: Workout[] = []
-
-			for (const workoutId of uniqueWorkoutIds) {
-				const res = await dispatch(fetchWorkout({ workoutId, token })).unwrap()
-				workoutsData.push(res)
-			}
+			const workoutsData = await Promise.all(
+				uniqueWorkoutIds.map(workoutId =>
+					dispatch(fetchWorkout({ workoutId, token })).unwrap()
+				)
+			)
 
 			setCurrentWorkouts(workoutsData)
 		} catch {
@@ -84,7 +85,41 @@ export default function UserProfile() {
 		dispatch(logout())
 		router.push('/')
 	}
-	console.log('selected', selectedCourses)
+	const progressForCurrentCourse = courseProgress?.find(
+		p => p.courseId === currentCourseId
+	)
+
+	const workoutsProgressMap = progressForCurrentCourse
+		? Object.fromEntries(
+				progressForCurrentCourse.workoutsProgress.map(w => [
+					w.workoutId,
+					{ workoutCompleted: w.workoutCompleted },
+				])
+		  )
+		: {}
+
+	const handleResetProgress = async (courseId: string) => {
+		if (!token) return
+
+		try {
+			const res = await fetch(`/api/fitness/courses/${courseId}/reset`, {
+				method: 'PATCH',
+				headers: {
+					Authorization: `Bearer ${token}`,
+					'Content-Type': '',
+				},
+			})
+
+			if (!res.ok) throw new Error('Не удалось сбросить прогресс')
+
+			alert('Прогресс курса удалён!')
+
+			dispatch(fetchCourseProgress({ courseId, token }))
+		} catch (err) {
+			console.error(err)
+			alert('Ошибка при сбросе прогресса')
+		}
+	}
 
 	return (
 		<div className={styles.profile}>
@@ -124,10 +159,13 @@ export default function UserProfile() {
 					)
 
 					let percent = 0
+
 					if (progressForCourse) {
-						const workouts = progressForCourse.workoutsProgress ?? []
-						const total = workouts.length
-						const completed = workouts.filter(w => w.workoutCompleted).length
+						const completed = (progressForCourse.workoutsProgress ?? []).filter(
+							w => w.workoutCompleted
+						).length
+
+						const total = course.workouts.length
 
 						if (total > 0) {
 							percent = Math.round((completed / total) * 100)
@@ -139,6 +177,7 @@ export default function UserProfile() {
 							key={course._id}
 							course={course}
 							progress={percent}
+							onResetProgress={() => handleResetProgress(course._id)}
 							onOpenTrainings={() => handleOpenTrainings(course)}
 							showFavorite={false}
 						/>
@@ -152,6 +191,8 @@ export default function UserProfile() {
 				title={modalTitle}
 				trainings={currentWorkouts}
 				loading={modalLoading}
+				courseProgress={workoutsProgressMap}
+				courseId={currentCourseId ?? undefined}
 			/>
 		</div>
 	)

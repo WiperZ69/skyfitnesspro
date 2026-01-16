@@ -71,11 +71,11 @@ const authSlice = createSlice({
 		restoreSession: state => {
 			if (typeof window !== 'undefined') {
 				const token = localStorage.getItem('token')
-				const user = localStorage.getItem('user')
+				const email = localStorage.getItem('email')
 
-				if (token && user) {
+				if (token && email) {
 					state.user.token = token
-					state.user.email = JSON.parse(user)
+					state.user.email = email
 					state.isAuthenticated = true
 				}
 			}

@@ -19,11 +19,11 @@ export const fetchCourses = createAsyncThunk<Course[], string>(
 				headers: { Authorization: `Bearer ${token}` },
 			})
 			return res.data as Course[]
-		} catch (err: any) {
+		} catch (err: unknown) {
 			return rejectWithValue(
-				err?.response?.data?.message ||
-					err?.message ||
-					'Не удалось загрузить список курсов'
+				err instanceof Error
+					? err.message
+					: 'Не удалось загрузить список курсов'
 			)
 		}
 	}

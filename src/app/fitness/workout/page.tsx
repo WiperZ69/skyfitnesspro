@@ -28,26 +28,39 @@ export default function WorkoutPage() {
 
 	const [workout, setWorkout] = useState<Workout | null>(null)
 	const [loading, setLoading] = useState(true)
-	const [progress, setProgress] = useState<number[]>([])
+	const [progress, setProgress] = useState<string[]>([])
 	const [modalOpen, setModalOpen] = useState(false)
-
-	function updateExerciseProgress(index: number, newValue: number) {
-		setProgress(prev => prev.map((p, i) => (i === index ? newValue : p)))
-	}
 
 	async function saveProgress() {
 		const token = localStorage.getItem('token')
 		const courseId = workout?.courseId || searchParams.get('courseId')
-		if (!token || !courseId || !workoutId) return
 
-		await fetch(`${BASE_API_URL}/courses/${courseId}/workouts/${workoutId}`, {
-			method: 'PATCH',
-			headers: {
-				'Content-Type': '',
-				Authorization: `Bearer ${token}`,
-			},
-			body: JSON.stringify({ progressData: progress }),
-		})
+		if (!token || !courseId || !workoutId) {
+			console.error('Нет token / courseId / workoutId')
+			return
+		}
+
+		const res = await fetch(
+			`${BASE_API_URL}/courses/${courseId}/workouts/${workoutId}`,
+			{
+				method: 'PATCH',
+				headers: {
+					'Content-Type': '',
+					Authorization: `Bearer ${token}`,
+				},
+				body: JSON.stringify({
+					progressData: progress.map(v => Number(v) || 0),
+				}),
+			}
+		)
+
+		if (!res.ok) {
+			const text = await res.text()
+			console.error('Не удалось сохранить прогресс', res.status, text)
+			return
+		}
+
+		setModalOpen(false)
 	}
 
 	useEffect(() => {
@@ -57,15 +70,21 @@ export default function WorkoutPage() {
 			try {
 				const token = localStorage.getItem('token')
 
-				const res = await fetch(
-					`https://wedev-api.sky.pro/api/fitness/workouts/${workoutId}`,
-					{ headers: { Authorization: `Bearer ${token}` } }
-				)
+				const res = await fetch(`${BASE_API_URL}/workouts/${workoutId}`, {
+					headers: token ? { Authorization: `Bearer ${token}` } : {},
+				})
+
+				if (!res.ok) {
+					console.error('Не удалось загрузить тренировку', res.status)
+					setWorkout(null)
+					return
+				}
 
 				const data = await res.json()
 				setWorkout(data)
 			} catch (e) {
 				console.error(e)
+				setWorkout(null)
 			} finally {
 				setLoading(false)
 			}
@@ -76,13 +95,17 @@ export default function WorkoutPage() {
 
 	useEffect(() => {
 		if (workout) {
-			if (workout.progressData && workout.progressData.length) {
-				setProgress(workout.progressData)
+			if (workout.progressData?.length) {
+				setProgress(workout.progressData.map(v => String(v)))
 			} else {
-				setProgress(new Array(workout.exercises.length).fill(0))
+				setProgress(new Array(workout.exercises.length).fill(''))
 			}
 		}
 	}, [workout])
+
+	function updateExerciseProgress(index: number, value: string) {
+		setProgress(prev => prev.map((p, i) => (i === index ? value : p)))
+	}
 
 	if (!workoutId) return <p className={styles.status}>Нет ID тренировки</p>
 	if (loading) return <p className={styles.status}>Загрузка…</p>
@@ -108,6 +131,9 @@ export default function WorkoutPage() {
 				<div className={styles.grid}>
 					{workout.exercises.map((ex, i) => {
 						const percent = calcPercent(progress[i], ex.quantity)
+						console.log(ex.quantity)
+						console.log(progress[i])
+						console.log(percent)
 
 						return (
 							<div key={ex._id} className={styles.exercise}>
@@ -132,7 +158,7 @@ export default function WorkoutPage() {
 						setModalOpen(true)
 					}}
 				>
-					Заполнить свой прогресс
+					Заполнить мой прогресс
 				</button>
 				{modalOpen && (
 					<div className={styles.container} onClick={() => setModalOpen(false)}>
@@ -151,10 +177,17 @@ export default function WorkoutPage() {
 													type='number'
 													min={0}
 													max={ex.quantity}
+													placeholder='0'
 													value={progress[i]}
-													onChange={e =>
-														updateExerciseProgress(i, Number(e.target.value))
-													}
+													onChange={e => {
+														const value = e.target.value
+														if (+value < 0) return
+														if (+value > ex.quantity) {
+															updateExerciseProgress(i, String(ex.quantity))
+															return
+														}
+														updateExerciseProgress(i, value)
+													}}
 												/>
 											</div>
 										)

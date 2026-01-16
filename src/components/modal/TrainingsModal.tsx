@@ -15,6 +15,7 @@ interface TrainingsModalProps {
 	courseProgress?: {
 		[workoutId: string]: { workoutCompleted: boolean }
 	} | null
+	courseId?: string
 }
 
 export default function TrainingsModal(props: TrainingsModalProps) {
@@ -24,20 +25,26 @@ export default function TrainingsModal(props: TrainingsModalProps) {
 	return <ModalContent key={Number(isOpen)} {...props} />
 }
 
-function ModalContent({
-	onClose,
-	title = 'Выберите тренировку',
-	trainings,
-	loading = false,
-	courseProgress = {},
-}: TrainingsModalProps) {
+function ModalContent(props: TrainingsModalProps) {
+	const {
+		onClose,
+		title = 'Выберите тренировку',
+		trainings,
+		loading = false,
+		courseProgress = {},
+		courseId,
+	} = props
 	const [selected, setSelected] = useState<string | null>(null)
 	const router = useRouter()
 
 	const handleStart = () => {
 		if (!selected) return
 		onClose()
-		router.push(`/fitness/workout?workoutId=${selected}`)
+		if (courseId) {
+			router.push(`/fitness/workout?workoutId=${selected}&courseId=${courseId}`)
+		} else {
+			router.push(`/fitness/workout?workoutId=${selected}`)
+		}
 	}
 
 	return (
@@ -57,8 +64,10 @@ function ModalContent({
 									key={w._id}
 									className={`${styles.item} ${
 										selected === w._id ? styles.selected : ''
-									}`}
-									onClick={() => setSelected(w._id)}
+									} ${completed ? styles.disabled : ''}`}
+									onClick={() => {
+										if (!completed) setSelected(w._id)
+									}}
 								>
 									<div
 										className={`${styles.checkbox} ${

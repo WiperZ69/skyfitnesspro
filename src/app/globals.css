@@ -27,7 +27,7 @@ p {
 a,
 input,
 button {
-	font-family: var(--font-montserrat), system-ui, Avenir, Helvetica, Arial,
+	font-family: var(--font-roboto), system-ui, Avenir, Helvetica, Arial,
 		sans-serif;
 }
 

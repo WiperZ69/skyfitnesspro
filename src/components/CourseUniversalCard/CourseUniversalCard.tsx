@@ -37,9 +37,10 @@ export default function CourseUniversalCard({
 		else dispatch(addCourse(course._id))
 	}
 
-	const handleTrainings = (e: React.MouseEvent) => {
+	const handleTrainings = async (e: React.MouseEvent) => {
 		e.preventDefault()
 		e.stopPropagation()
+
 		onOpenTrainings?.(course)
 	}
 
