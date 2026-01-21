@@ -13,6 +13,7 @@ interface CourseUniversalCardProps {
 	course: Course
 	progress?: number
 	onOpenTrainings?: (course: Course) => void
+	onResetProgress?: (course: Course) => void
 	showFavorite?: boolean
 }
 
@@ -20,6 +21,7 @@ export default function CourseUniversalCard({
 	course,
 	progress,
 	onOpenTrainings,
+	onResetProgress,
 	showFavorite = true,
 }: CourseUniversalCardProps) {
 	const dispatch = useAppDispatch()
@@ -42,6 +44,13 @@ export default function CourseUniversalCard({
 		e.stopPropagation()
 
 		onOpenTrainings?.(course)
+	}
+
+	const handleReset = async (e: React.MouseEvent) => {
+		e.preventDefault()
+		e.stopPropagation()
+
+		onResetProgress?.(course)
 	}
 
 	return (
@@ -152,7 +161,10 @@ export default function CourseUniversalCard({
 						<p className={styles.progressLabel}>Прогресс: {progress}%</p>
 						<ProgressBar progress={progress} />
 
-						<button className={styles.button} onClick={handleTrainings}>
+						<button
+							className={styles.button}
+							onClick={progress === 100 ? handleReset : handleTrainings}
+						>
 							{progress === 0
 								? 'Начать тренировки'
 								: progress === 100
@@ -162,7 +174,6 @@ export default function CourseUniversalCard({
 					</div>
 				)}
 
-				{/* ----- ДОБАВИТЬ / УДАЛИТЬ КУРС (рендер на главной) ------ */}
 				{showFavorite && (
 					<div
 						className={styles.favorite}

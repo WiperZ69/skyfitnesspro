@@ -131,9 +131,6 @@ export default function WorkoutPage() {
 				<div className={styles.grid}>
 					{workout.exercises.map((ex, i) => {
 						const percent = calcPercent(progress[i], ex.quantity)
-						console.log(ex.quantity)
-						console.log(progress[i])
-						console.log(percent)
 
 						return (
 							<div key={ex._id} className={styles.exercise}>

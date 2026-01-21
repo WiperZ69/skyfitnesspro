@@ -25,10 +25,17 @@ export function WorkoutClient({ workout }: Props) {
 			? workout.progressData
 			: new Array(workout.exercises.length).fill(0)
 	)
+	console.log('progress', progress)
 	const [modalOpen, setModalOpen] = useState(false)
 
 	const workoutId = workout._id
 	const courseId = workout.courseId || searchParams.get('courseId')
+
+	const allExercisesCompleted = workout.exercises.every(
+		(ex, i) => (progress[i] ?? 0) >= ex.quantity
+	)
+
+	console.log('all', allExercisesCompleted)
 
 	function updateExerciseProgress(index: number, newValue: number) {
 		setProgress(prev => prev.map((p, i) => (i === index ? newValue : p)))
@@ -38,14 +45,32 @@ export function WorkoutClient({ workout }: Props) {
 		const token = localStorage.getItem('token')
 		if (!token || !courseId || !workoutId) return
 
-		await fetch(`${BASE_API_URL}/courses/${courseId}/workouts/${workoutId}`, {
-			method: 'PATCH',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${token}`,
-			},
-			body: JSON.stringify({ progressData: progress }),
-		})
+		try {
+			const res = await fetch(
+				`${BASE_API_URL}/courses/${courseId}/workouts/${workoutId}`,
+				{
+					method: 'PATCH',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${token}`,
+					},
+					body: JSON.stringify({ progressData: progress }),
+				}
+			)
+
+			if (!res.ok) {
+				console.error('Failed to save progress', await res.text())
+				alert('Не удалось сохранить прогресс. Попробуйте ещё раз.')
+				return
+			}
+
+			alert('Прогресс сохранён!')
+			setModalOpen(false)
+			console.log('ok vse')
+		} catch (e) {
+			console.error('Error while saving progress', e)
+			alert('Произошла ошибка при сохранении прогресса.')
+		}
 	}
 
 	return (
@@ -88,10 +113,16 @@ export function WorkoutClient({ workout }: Props) {
 				<button
 					className={styles.button}
 					onClick={() => {
+						if (allExercisesCompleted) {
+							void saveProgress()
+							return
+						}
 						setModalOpen(true)
 					}}
 				>
-					Заполнить свой прогресс
+					{allExercisesCompleted
+						? 'Завершить тренировку'
+						: 'Заполнить свой прогресс'}
 				</button>
 				{modalOpen && (
 					<div className={styles.container} onClick={() => setModalOpen(false)}>
@@ -135,4 +166,3 @@ export function WorkoutClient({ workout }: Props) {
 		</div>
 	)
 }
-

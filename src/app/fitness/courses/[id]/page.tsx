@@ -7,9 +7,9 @@ import styles from './coursePage.module.scss'
 export default async function CoursePage({
 	params,
 }: {
-	params: { id: string }
+	params: Promise<{ id: string }>
 }) {
-	const { id } = params
+	const { id } = await params
 
 	const res = await fetch(`${BASE_API_URL + ROUTE_API_URL.courses}/${id}`, {
 		cache: 'no-store',

@@ -12,8 +12,10 @@ import styles from './UserProfile.module.scss'
 
 import CourseUniversalCard from '@/components/CourseUniversalCard/CourseUniversalCard'
 import TrainingsModal from '@/components/modal/TrainingsModal'
+import { BASE_API_URL } from '@/lib/constants'
 import type { Course, Workout } from '@/lib/types'
 import { fetchCourses } from '@/store/features/OLDcoursesSlice'
+import Link from 'next/link'
 
 export default function UserProfile() {
 	const dispatch = useAppDispatch()
@@ -31,21 +33,19 @@ export default function UserProfile() {
 
 	const token = user.token
 
-	console.log(user)
-
 	useEffect(() => {
 		if (!token) return
 		dispatch(fetchCourses(token))
 	}, [token, dispatch])
 
-	// Фильтруем курсы выбранные пользователем
+	// Фильтр курсов выбранных пользователем
 	const selectedCourses = useMemo(() => {
 		return user?.selectedCourses
 			? courses.filter(c => user.selectedCourses.includes(c._id))
 			: []
 	}, [user?.selectedCourses, courses])
 
-	// Загружаем прогресс по каждому курсу
+	// Загрузка прогресса по каждому курсу
 	useEffect(() => {
 		if (!token) return
 		if (!user?.selectedCourses) return
@@ -89,20 +89,21 @@ export default function UserProfile() {
 		p => p.courseId === currentCourseId
 	)
 
-	const workoutsProgressMap = progressForCurrentCourse
-		? Object.fromEntries(
-				progressForCurrentCourse.workoutsProgress.map(w => [
-					w.workoutId,
-					{ workoutCompleted: w.workoutCompleted },
-				])
-		  )
-		: {}
+	const workoutsProgressMap =
+		progressForCurrentCourse?.workoutsProgress && progressForCurrentCourse
+			? Object.fromEntries(
+					progressForCurrentCourse.workoutsProgress.map(w => [
+						w.workoutId,
+						{ workoutCompleted: w.workoutCompleted },
+					])
+			  )
+			: {}
 
 	const handleResetProgress = async (courseId: string) => {
 		if (!token) return
 
 		try {
-			const res = await fetch(`/api/fitness/courses/${courseId}/reset`, {
+			const res = await fetch(`${BASE_API_URL}/courses/${courseId}/reset`, {
 				method: 'PATCH',
 				headers: {
 					Authorization: `Bearer ${token}`,
@@ -152,38 +153,48 @@ export default function UserProfile() {
 
 			<h2 className={styles.section_title}>Мои курсы</h2>
 
-			<div className={styles.courses_list}>
-				{selectedCourses.map(course => {
-					const progressForCourse = (courseProgress ?? []).find(
-						p => p.courseId === course._id
-					)
+			{selectedCourses.length === 0 ? (
+				<p className={styles.emptyCoursesText}>
+					Добавленных курсов пока нет. Выберите курс на странице{' '}
+					<Link className={styles.emptyCoursesLink} href='/'>
+						Курсы
+					</Link>
+					.
+				</p>
+			) : (
+				<div className={styles.courses_list}>
+					{selectedCourses.map(course => {
+						const progressForCourse = (courseProgress ?? []).find(
+							p => p.courseId === course._id
+						)
 
-					let percent = 0
+						let percent = 0
 
-					if (progressForCourse) {
-						const completed = (progressForCourse.workoutsProgress ?? []).filter(
-							w => w.workoutCompleted
-						).length
+						if (progressForCourse) {
+							const completed = (
+								progressForCourse.workoutsProgress ?? []
+							).filter(w => w.workoutCompleted).length
 
-						const total = course.workouts.length
+							const total = course.workouts.length
 
-						if (total > 0) {
-							percent = Math.round((completed / total) * 100)
+							if (total > 0) {
+								percent = Math.round((completed / total) * 100)
+							}
 						}
-					}
 
-					return (
-						<CourseUniversalCard
-							key={course._id}
-							course={course}
-							progress={percent}
-							onResetProgress={() => handleResetProgress(course._id)}
-							onOpenTrainings={() => handleOpenTrainings(course)}
-							showFavorite={false}
-						/>
-					)
-				})}
-			</div>
+						return (
+							<CourseUniversalCard
+								key={course._id}
+								course={course}
+								progress={percent}
+								onResetProgress={c => handleResetProgress(c._id)}
+								onOpenTrainings={c => handleOpenTrainings(c)}
+								showFavorite={false}
+							/>
+						)
+					})}
+				</div>
+			)}
 
 			<TrainingsModal
 				isOpen={isModalOpen}

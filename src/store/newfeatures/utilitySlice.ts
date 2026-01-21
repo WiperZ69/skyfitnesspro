@@ -1,31 +1,29 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface initialStoreState {
-  error: string;
-  loading: boolean;
-
-  // вспомогательный объект
+	error: string
+	loading: boolean
 }
 
 const initialState: initialStoreState = {
-  error: '',
-  loading: true,
-};
+	error: '',
+	loading: true,
+}
 
 export const utilitySlice = createSlice({
-  name: 'utilities',
-  initialState,
-  reducers: {
-    setUtilityError: (state, action: PayloadAction<string>) => {
-      state.error = action.payload;
-    },
+	name: 'utilities',
+	initialState,
+	reducers: {
+		setUtilityError: (state, action: PayloadAction<string>) => {
+			state.error = action.payload
+		},
 
-    setUtilityLoading: (state, action: PayloadAction<boolean>) => {
-      state.loading = action.payload;
-    },
-  },
-});
+		setUtilityLoading: (state, action: PayloadAction<boolean>) => {
+			state.loading = action.payload
+		},
+	},
+})
 
-export const { setUtilityError, setUtilityLoading } = utilitySlice.actions;
+export const { setUtilityError, setUtilityLoading } = utilitySlice.actions
 
-export const utilitySliceReducer = utilitySlice.reducer;
+export const utilitySliceReducer = utilitySlice.reducer

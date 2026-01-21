@@ -28,7 +28,6 @@ export const addCourse = createAsyncThunk<
 				}
 			)
 
-			// Обновляем selectedCourses в authSlice
 			dispatch(updateSelectedCourses(courseId))
 
 			return courseId
@@ -50,7 +49,7 @@ export const removeCourse = createAsyncThunk<
 	'userCourses/removeCourse',
 	async (courseId, { getState, dispatch, rejectWithValue }) => {
 		try {
-			const token = getState().auth.user.token // Исправлено: было getState().auth.token
+			const token = getState().auth.user.token
 			if (!token) return rejectWithValue('Нет токена')
 
 			const url = `${BASE_API_URL}${ROUTE_API_URL.addUserCourse}/${courseId}`
@@ -61,8 +60,6 @@ export const removeCourse = createAsyncThunk<
 				},
 			})
 
-			// Обновляем selectedCourses в authSlice
-			// Используем тот же action, так как он toggle логику
 			dispatch(updateSelectedCourses(courseId))
 
 			return courseId
@@ -76,7 +73,6 @@ export const removeCourse = createAsyncThunk<
 	}
 )
 
-// Дополнительный thunk для получения выбранных курсов
 export const fetchUserCourses = createAsyncThunk<
 	string[],
 	void,
@@ -96,7 +92,6 @@ export const fetchUserCourses = createAsyncThunk<
 				},
 			})
 
-			// Предполагаем, что API возвращает массив courseIds
 			const courses = res.data.courses || res.data || []
 			dispatch(setSelectedCourses(courses))
 
@@ -131,7 +126,6 @@ const userCoursesSlice = createSlice({
 	},
 	extraReducers: builder => {
 		builder
-			// addCourse
 			.addCase(addCourse.pending, state => {
 				state.loading = true
 				state.error = null
@@ -144,7 +138,6 @@ const userCoursesSlice = createSlice({
 				state.error = action.payload as string
 			})
 
-			// removeCourse
 			.addCase(removeCourse.pending, state => {
 				state.loading = true
 				state.error = null
@@ -157,7 +150,6 @@ const userCoursesSlice = createSlice({
 				state.error = action.payload as string
 			})
 
-			// fetchUserCourses
 			.addCase(fetchUserCourses.pending, state => {
 				state.loading = true
 				state.error = null
