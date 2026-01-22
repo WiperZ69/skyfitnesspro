@@ -1,11 +1,13 @@
 import { Header } from '@/components/Header/Header'
 import { AuthModal } from '@/components/modal/AuthModal'
+import ToastProvider from '@/components/ToastProvider/ToastProvider'
 import type { Metadata } from 'next'
 import { Roboto } from 'next/font/google'
 import 'react-toastify/dist/ReactToastify.css'
 import ReduxProvider from '../store/ReduxProvider'
 import './globals.css'
 import InitAuth from './providers/InitAuth'
+import './toastify-custom.css'
 
 const roboto = Roboto({
 	variable: '--font-roboto',
@@ -28,6 +30,7 @@ export default function RootLayout({
 				<ReduxProvider>
 					<AuthModal />
 					<InitAuth />
+					<ToastProvider />
 					<Header />
 					{children}
 				</ReduxProvider>

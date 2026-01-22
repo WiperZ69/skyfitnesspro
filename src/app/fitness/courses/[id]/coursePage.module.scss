@@ -96,6 +96,9 @@
 	font-size: 24px;
 	line-height: 110%;
 	color: #fff;
+	@media (max-width: 660px) {
+		font-size: 18px;
+	}
 }
 
 .fittingNumber {
@@ -116,6 +119,7 @@
 	color: #000;
 	@media (max-width: 660px) {
 		flex-wrap: nowrap;
+		font-size: 18px;
 	}
 }
 

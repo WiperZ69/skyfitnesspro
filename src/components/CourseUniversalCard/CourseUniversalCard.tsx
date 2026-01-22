@@ -6,6 +6,8 @@ import { useAppDispatch, useAppSelector } from '@/store/store'
 
 import { capitalizeFirstLetter } from '@/app/utils/capitalize'
 import Link from 'next/link'
+import { useEffect, useRef } from 'react'
+import { toast } from 'react-toastify'
 import ProgressBar from '../ProgressBar/ProgressBar'
 import styles from './CourseUniversalCard.module.scss'
 
@@ -26,8 +28,31 @@ export default function CourseUniversalCard({
 }: CourseUniversalCardProps) {
 	const dispatch = useAppDispatch()
 	const { user, isAuthenticated } = useAppSelector(state => state.auth)
+	const userCoursesLoading = useAppSelector(state => state.userCourses.loading)
+	const prevAlreadySelectedRef = useRef<boolean | null>(null)
 
 	const alreadySelected = user?.selectedCourses?.includes(course._id)
+
+	// Отслеживаем успешное добавление/удаление курса
+	useEffect(() => {
+		if (prevAlreadySelectedRef.current === null) {
+			prevAlreadySelectedRef.current = alreadySelected
+			return
+		}
+
+		if (
+			prevAlreadySelectedRef.current !== alreadySelected &&
+			!userCoursesLoading
+		) {
+			if (alreadySelected) {
+				toast.success('Курс успешно добавлен!')
+			} else {
+				toast.success('Курс успешно удален!')
+			}
+		}
+
+		prevAlreadySelectedRef.current = alreadySelected
+	}, [alreadySelected, userCoursesLoading])
 
 	const handleToggle = (e: React.MouseEvent) => {
 		e.preventDefault()

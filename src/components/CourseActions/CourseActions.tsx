@@ -3,7 +3,8 @@
 import { openAuthModal } from '@/store/features/uiSlice'
 import { addCourse, removeCourse } from '@/store/features/userCoursesSlice'
 import { useAppDispatch, useAppSelector } from '@/store/store'
-import { useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
+import { toast } from 'react-toastify'
 import styles from './CourseActions.module.scss'
 
 type Props = {
@@ -15,11 +16,30 @@ export default function CourseActions({ courseId }: Props) {
 	const { user, isAuthenticated } = useAppSelector(state => state.auth)
 	const userCoursesLoading = useAppSelector(state => state.userCourses.loading)
 	const userCoursesError = useAppSelector(state => state.userCourses.error)
+	const prevIsAddedRef = useRef<boolean | null>(null)
 
 	const isAdded = useMemo(() => {
 		if (!user) return false
 		return (user.selectedCourses || []).includes(courseId)
 	}, [user, courseId])
+
+	// Отслеживаем успешное добавление/удаление курса
+	useEffect(() => {
+		if (prevIsAddedRef.current === null) {
+			prevIsAddedRef.current = isAdded
+			return
+		}
+
+		if (prevIsAddedRef.current !== isAdded && !userCoursesLoading) {
+			if (isAdded) {
+				toast.success('Курс успешно добавлен!')
+			} else {
+				toast.success('Курс успешно удален!')
+			}
+		}
+
+		prevIsAddedRef.current = isAdded
+	}, [isAdded, userCoursesLoading])
 
 	const handleAdd = () => {
 		if (!isAuthenticated) {
