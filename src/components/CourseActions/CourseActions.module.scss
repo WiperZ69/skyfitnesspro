@@ -1,0 +1,35 @@
+.ctaBtn {
+	background: #bcec30;
+	border-radius: 46px;
+	padding: 16px 26px;
+	font-weight: 600;
+	display: inline-block;
+	font-weight: 400;
+	font-size: 18px;
+	line-height: 110%;
+	color: #000;
+	border: none;
+	cursor: pointer;
+	@media (max-width: 660px) {
+		width: 100%;
+	}
+}
+
+.ctaBtn:hover {
+	background-color: #c6ff00;
+}
+
+.ctaBtn:active {
+	background-color: #000;
+	color: #fff;
+}
+
+.ctaBtn:disabled {
+	background-color: #f7f7f7;
+	color: #999;
+}
+
+.error {
+	color: red;
+	margin-top: 6px;
+}

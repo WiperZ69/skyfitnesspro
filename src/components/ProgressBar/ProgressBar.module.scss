@@ -1,0 +1,22 @@
+.wrapper {
+	width: 100%;
+}
+
+.track {
+	width: 100%;
+	height: 6px;
+	background: #f2f2f2;
+	border-radius: 50px;
+	overflow: hidden;
+}
+
+.progress {
+	height: 100%;
+	width: 0%;
+	border-radius: 50px;
+
+	background: linear-gradient(90deg, #00c1ff 0%, #25c8ff 100%);
+	box-shadow: 0 0 10px rgba(188, 236, 48, 0.4);
+
+	transition: width 0.45s ease;
+}

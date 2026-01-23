@@ -1,0 +1,47 @@
+/* Стили для react-toastify с зеленым акцентным цветом */
+.Toastify__toast-container {
+	z-index: 9999;
+}
+
+.Toastify__toast {
+	border-radius: 8px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	font-family: var(--font-roboto), system-ui, Avenir, Helvetica, Arial,
+		sans-serif;
+}
+
+.Toastify__toast--success {
+	background: #bcec30;
+	color: #000;
+}
+
+.Toastify__toast--success .Toastify__toast-body {
+	color: #000;
+	font-weight: 500;
+}
+
+.Toastify__toast--success .Toastify__progress-bar {
+	background: #c6ff00;
+}
+
+.Toastify__toast--error {
+	background: #ff4444;
+	color: #fff;
+}
+
+.Toastify__toast--error .Toastify__toast-body {
+	color: #fff;
+}
+
+.Toastify__close-button {
+	color: #000;
+	opacity: 0.7;
+}
+
+.Toastify__close-button:hover {
+	opacity: 1;
+}
+
+.Toastify__toast--error .Toastify__close-button {
+	color: #fff;
+}

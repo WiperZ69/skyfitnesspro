@@ -1,0 +1,99 @@
+.main {
+	padding-top: 60px;
+	padding-inline: clamp(80px, 8vw, 160px);
+	@media (max-width: 660px) {
+		padding-inline: 16px;
+		padding-top: 40px;
+	}
+
+	&__heading {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		gap: 24px;
+	}
+
+	&__title {
+		font-weight: 500;
+		font-size: 60px;
+		line-height: 100%;
+		color: #000;
+		@media (max-width: 660px) {
+			font-weight: 500;
+			font-size: 32px;
+			line-height: 110%;
+			color: #000;
+		}
+	}
+
+	&__description {
+		position: relative;
+		display: inline-block;
+		padding: 14px 18px;
+		border-radius: 12px;
+		background: #bcec30;
+
+		font-weight: 600;
+		font-size: 24px;
+		line-height: 120%;
+		color: #1e1e1e;
+		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+
+		&::after {
+			content: '';
+			position: absolute;
+			left: 24px;
+			bottom: -12px;
+			width: 0;
+			height: 0;
+			border: 10px solid transparent;
+			border-top-color: #bcec30;
+			filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.08));
+		}
+
+		@media (max-width: 660px) {
+			display: none;
+		}
+	}
+}
+
+.courses {
+	padding-top: 50px;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: 40px;
+	@media (max-width: 660px) {
+		padding-top: 34px;
+		justify-content: center;
+	}
+}
+
+.loaderWrapper {
+	margin-top: 60px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 16px;
+}
+
+.loader {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	border: 3px solid #e5e5e5;
+	border-top-color: #00c1ff;
+	animation: spin 0.8s linear infinite;
+}
+
+.loaderText {
+	font-size: 16px;
+	color: #202020;
+}
+
+@keyframes spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
